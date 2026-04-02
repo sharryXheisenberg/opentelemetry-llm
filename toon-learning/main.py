@@ -1,10 +1,9 @@
 import json
-import toons                     # ← NEW: this is the working library
+import toons                    
 import tiktoken
 import ollama
 from typing import Dict, Any, List
 
-# ====================== MULTIPLE REAL-WORLD EXAMPLES ======================
 EXAMPLES: List[Dict[str, Any]] = [
     {
         "name": "1. Simple Object",
@@ -62,12 +61,12 @@ def compare_one_example(example: Dict[str, Any]):
     json_tokens_pretty = len(enc.encode(json_pretty))
     json_tokens_min = len(enc.encode(json_minified))
 
-    # 2. TOON  ← NOW USING toons (fully working)
-    toon_str = toons.dumps(data)          # ← changed from encode()
+    # 2. TOON  ← NOW USING toons 
+    toon_str = toons.dumps(data)         
     toon_tokens = len(enc.encode(toon_str))
 
     # 3. Round-trip proof (lossless)
-    decoded = toons.loads(toon_str)       # ← changed from decode()
+    decoded = toons.loads(toon_str)      
     lossless = decoded == data
 
     print("JSON (pretty):")
@@ -123,14 +122,13 @@ def run_llm_accuracy_test(prompt_json: str, prompt_toon: str, question: str, mod
     except Exception as e:
         print(f"  Ollama test failed: {e}")
 
-# ====================== MAIN DEMO ======================
 if __name__ == "__main__":
     print(" TOON vs JSON — Full Demo with 5 Examples + LLM Accuracy")
     print("   (Now using stable 'toons' Rust library)\n")
 
     for ex in EXAMPLES:
         json_prompt, toon_prompt, q = compare_one_example(ex)
-        # run_llm_accuracy_test(json_prompt, toon_prompt, q)   # ← uncomment when ready
+        # run_llm_accuracy_test(json_prompt, toon_prompt, q)  
 
     print("\n" + "="*80)
     print(" All examples completed! TOON is now working correctly.")
